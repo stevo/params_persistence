@@ -1,0 +1,55 @@
+params_persistance
+=====================
+
+    This plugin stores params keys into DB for further restoration.
+    Params are automatically scoped to current user, so it is ideal for storing last filter params user used.
+
+
+installation and setup
+======================
+
+    ruby script/plugin install git://github.com/stevo/params_persistance.git
+    ruby script/generate saved_filter_params
+    rake db:migrate
+
+    There must be current_user method available in controller, returning user object or nil
+
+usage
+======================
+
+#Here using Inherited resources and searchlogic, but it makes no difference....
+
+class Invoicing::InvoicesController < InheritedResources::Base
+
+  set_search_persitence   #This will store params[:search] for current_user in db, and restore it (merge with params) whenever it is not explicitely passed
+
+  protected
+  def collection
+    @search = Invoice.searchlogic(params[:search])
+    @invoices = @search.all.paginate :page => params[:page], :per_page => 20
+  end
+end
+
+
+set_search_persitence :name => "my_filter_params" #this will just change name, under which params are stored within DB
+set_search_persitence :params_key => :filter #this will store different params key (default is :search)
+set_search_persitence :actions => [:show, :index] #this will execute store/restore procedure on actions enumerated (default is :index)
+ 
+
+If there is skip_filter_saving?(filter_name)  method available for user instance, and it returns true, params for such a user will not be stored/restored.
+
+ex.
+
+class User < ActiveRecord::Base
+  devise :authenticatable, :recoverable, :rememberable, :validatable
+
+  def skip_filter_saving?(filter)
+    self.some_attribute_that_indicates_filter_should_be_skipped?
+  end
+
+end
+
+
+Author::    Blazej "Stevo" Kosmowski (b.kosmowski@selleo.com)
+Copyright:: Copyright (c) 2010 selleo.com
+License::   Distributes under the same terms as Ruby
