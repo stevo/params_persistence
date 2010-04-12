@@ -6,7 +6,7 @@ module SearchPersistence
 
   module ControllerMethods
 
-    def set_search_persitence(*args)
+    def set_search_persistence(*args)
       cattr_accessor :search_persistence_options
 
       self.search_persistence_options = args.extract_options!
