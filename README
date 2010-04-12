@@ -21,7 +21,7 @@ usage
 
 class Invoicing::InvoicesController < InheritedResources::Base
 
-  set_search_persitence   #This will store params[:search] for current_user in db, and restore it (merge with params) whenever it is not explicitely passed
+  set_search_persistence   #This will store params[:search] for current_user in db, and restore it (merge with params) whenever it is not explicitely passed
 
   protected
   def collection
@@ -31,9 +31,9 @@ class Invoicing::InvoicesController < InheritedResources::Base
 end
 
 
-set_search_persitence :name => "my_filter_params" #this will just change name, under which params are stored within DB
-set_search_persitence :params_key => :filter #this will store different params key (default is :search)
-set_search_persitence :actions => [:show, :index] #this will execute store/restore procedure on actions enumerated (default is :index)
+set_search_persistence :name => "my_filter_params" #this will just change name, under which params are stored within DB
+set_search_persistence :params_key => :filter #this will store different params key (default is :search)
+set_search_persistence :actions => [:show, :index] #this will execute store/restore procedure on actions enumerated (default is :index)
  
 
 If there is skip_filter_saving?(filter_name)  method available for user instance, and it returns true, params for such a user will not be stored/restored.
