@@ -1,2 +1,2 @@
-require 'search_persistance'
-ActionController::Base.send(:include, SearchPersistance)
+require 'search_persistence'
+ActionController::Base.send(:include, SearchPersistence)
